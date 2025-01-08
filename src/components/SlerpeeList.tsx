@@ -11,6 +11,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import FolderIcon from '@mui/icons-material/Folder';
 import { Grid2 } from '@mui/material';
+import { useApi } from '../context/ApiContext';
 
 function generate(element: React.ReactElement<unknown>) {
 	return [0, 1, 2].map((value) =>
@@ -27,6 +28,7 @@ const Demo = styled('div')(({ theme }) => ({
 export default function SlerpeeList() {
 	const [dense, setDense] = React.useState(false);
 	const [secondary, setSecondary] = React.useState(false);
+	const { response } = useApi();
 
 	return (
 		<Box sx={{ flexGrow: 1, maxWidth: 752 }}>
@@ -51,7 +53,6 @@ export default function SlerpeeList() {
 				/>
 			</FormGroup>
 			<Grid2
-				item
 				xs={12}
 				md={6}
 			>
@@ -64,17 +65,19 @@ export default function SlerpeeList() {
 				</Typography>
 				<Demo>
 					<List dense={dense}>
-						{generate(
-							<ListItem>
-								<ListItemIcon>
-									<FolderIcon />
-								</ListItemIcon>
-								<ListItemText
-									primary='Single-line item'
-									secondary={secondary ? 'Secondary text' : null}
-								/>
-							</ListItem>
-						)}
+						<ListItem>
+							<ListItemIcon>
+								<FolderIcon />
+							</ListItemIcon>
+							<ListItemText
+								primary='Response'
+								secondary={
+									response
+										? JSON.stringify(response, null, 2)
+										: 'No response yet'
+								}
+							/>
+						</ListItem>
 					</List>
 				</Demo>
 			</Grid2>
