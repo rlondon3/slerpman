@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { emphasize, styled } from '@mui/material/styles';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
+import { Link } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import HomeIcon from '@mui/icons-material/Home';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import RssFeedIcon from '@mui/icons-material/RssFeed';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import { Theme } from '../utils/ColorTheme';
 import { Grid2 } from '@mui/material';
 
@@ -49,20 +51,35 @@ export default function CustomizedBreadcrumbs() {
 		>
 			<Breadcrumbs aria-label='breadcrumb'>
 				<StyledBreadcrumb
-					component='a'
-					href='#'
-					label='Home'
+					component={Link}
+					target='_blank'
+					rel='noopener noreferrer'
+					label='Ralph Smith'
 					icon={<HomeIcon fontSize='small' />}
+					sx={{ '&:hover': { cursor: 'pointer' } }}
+					onClick={() => window.open('https://codesmithr.com', '_blank')}
 				/>
 				<StyledBreadcrumb
-					component='a'
-					href='#'
-					label='Catalog'
+					component={Link}
+					target='_blank'
+					rel='noopener noreferrer'
+					label='Github'
+					icon={<GitHubIcon fontSize='small' />}
+					sx={{ '&:hover': { cursor: 'pointer' } }}
+					onClick={() =>
+						window.open('https://github.com/rlondon3/slerpman', '_blank')
+					}
 				/>
 				<StyledBreadcrumb
-					label='Accessories'
-					deleteIcon={<ExpandMoreIcon />}
-					onDelete={handleClick}
+					component={Link}
+					target='_blank'
+					rel='noopener noreferrer'
+					label='Blog'
+					icon={<RssFeedIcon fontSize='small' />}
+					sx={{ '&:hover': { cursor: 'pointer' } }}
+					onClick={() =>
+						window.open('https://programmingthestreets.hashnode.dev', '_blank')
+					}
 				/>
 			</Breadcrumbs>
 		</Grid2>

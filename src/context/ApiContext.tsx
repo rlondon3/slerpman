@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import { createContext, useState, useContext, ReactNode } from 'react';
 import axios from 'axios';
 
 interface ApiContextType {
@@ -36,9 +36,19 @@ export function ApiProvider({ children }: ApiProviderProps) {
 			setResponse(res.data);
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				setResponse(error.response?.data || error.message);
+				if (
+					typeof error.response?.data === 'string' &&
+					error.response.data.includes('<!DOCTYPE html>')
+				) {
+					setResponse({ error: 'Route not found or server error' });
+				} else {
+					setResponse(error.response?.data || { error: error.message });
+				}
 			} else {
-				setResponse('An error occurred');
+				setResponse({
+					error:
+						'An error occurred. Please check the url and the request method.',
+				});
 			}
 		}
 	};

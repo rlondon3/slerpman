@@ -5,20 +5,19 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
-import FolderIcon from '@mui/icons-material/Folder';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import { Grid2 } from '@mui/material';
 import { useApi } from '../context/ApiContext';
+import { Theme } from '../utils/ColorTheme';
 
-function generate(element: React.ReactElement<unknown>) {
-	return [0, 1, 2].map((value) =>
-		React.cloneElement(element, {
-			key: value,
-		})
-	);
+interface ApiResponse {
+	error?: string;
+	status?: number;
+	data?: unknown;
+	message?: string;
 }
 
 const Demo = styled('div')(({ theme }) => ({
@@ -27,31 +26,35 @@ const Demo = styled('div')(({ theme }) => ({
 
 export default function SlerpeeList() {
 	const [dense, setDense] = React.useState(false);
-	const [secondary, setSecondary] = React.useState(false);
-	const { response } = useApi();
+	const { response, method } = useApi();
+
+	const getIcon = () => {
+		if (!response) return <DoNotDisturbOnIcon />;
+
+		if (typeof response === 'string') {
+			if (response.includes('<!DOCTYPE html>')) {
+				return <ErrorOutlineIcon color='error' />;
+			}
+			if (response.includes('error')) {
+				return <ErrorOutlineIcon color='error' />;
+			}
+		}
+
+		if (typeof response === 'object' && response !== null) {
+			const typedResponse = response as ApiResponse;
+			if (
+				typedResponse.error ||
+				(typedResponse.status && typedResponse.status >= 400)
+			) {
+				return <ErrorOutlineIcon color='error' />;
+			}
+		}
+
+		return <CheckCircleOutlineIcon color='success' />;
+	};
 
 	return (
 		<Box sx={{ flexGrow: 1, maxWidth: 752 }}>
-			<FormGroup row>
-				<FormControlLabel
-					control={
-						<Checkbox
-							checked={dense}
-							onChange={(event) => setDense(event.target.checked)}
-						/>
-					}
-					label='Remove Status Details'
-				/>
-				<FormControlLabel
-					control={
-						<Checkbox
-							checked={secondary}
-							onChange={(event) => setSecondary(event.target.checked)}
-						/>
-					}
-					label='Status Detail'
-				/>
-			</FormGroup>
 			<Grid2
 				xs={12}
 				md={6}
@@ -61,16 +64,16 @@ export default function SlerpeeList() {
 					variant='h6'
 					component='div'
 				>
-					Icon with text
+					API Response
 				</Typography>
 				<Demo>
 					<List dense={dense}>
 						<ListItem>
-							<ListItemIcon>
-								<FolderIcon />
-							</ListItemIcon>
+							<ListItemIcon>{getIcon()}</ListItemIcon>
 							<ListItemText
-								primary='Response'
+								primary={`${
+									method && response ? `${method} method response` : 'No Calls'
+								}`}
 								secondary={
 									response
 										? JSON.stringify(response, null, 2)

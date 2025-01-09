@@ -11,16 +11,8 @@ import { useApi } from '../context/ApiContext';
 import { ChangeEvent } from 'react';
 
 export default function SlerpeeForm() {
-	const {
-		url,
-		setUrl,
-		method,
-		setMethod,
-		body,
-		setBody,
-		response,
-		handleRequest,
-	} = useApi();
+	const { url, setUrl, method, setMethod, body, setBody, handleRequest } =
+		useApi();
 
 	const handleUrl = (e: ChangeEvent<HTMLInputElement>) => {
 		setUrl(e.target.value);
