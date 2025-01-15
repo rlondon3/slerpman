@@ -7,12 +7,23 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { Theme } from '../utils/ColorTheme';
 import { Button, Grid2 } from '@mui/material';
+import HeadersForm from './SlerpeeHeaders';
 import { useApi } from '../context/ApiContext';
 import { ChangeEvent } from 'react';
 
+//you need to move the handle method to the submit so that it doesn't update the method in slerplist when selecting the method- its confusing!
 export default function SlerpeeForm() {
-	const { url, setUrl, method, setMethod, body, setBody, handleRequest } =
-		useApi();
+	const {
+		url,
+		setUrl,
+		method,
+		setMethod,
+		body,
+		setBody,
+		handleRequest,
+		headers,
+		setHeaders,
+	} = useApi();
 
 	const handleUrl = (e: ChangeEvent<HTMLInputElement>) => {
 		setUrl(e.target.value);
@@ -39,11 +50,8 @@ export default function SlerpeeForm() {
 				noValidate
 				autoComplete='off'
 			>
-				<Grid2
-					container
-					spacing={2}
-				>
-					<Grid2 size={6}>
+				<Grid2 container>
+					<Grid2 size={4}>
 						<FormLabel id='demo-radio-buttons-group-label'>
 							HTTP Request
 						</FormLabel>
@@ -82,7 +90,7 @@ export default function SlerpeeForm() {
 						</RadioGroup>
 					</Grid2>
 					<Grid2
-						size={6}
+						size={8}
 						style={{ display: 'flex' }}
 					>
 						<TextField
@@ -95,22 +103,20 @@ export default function SlerpeeForm() {
 							onChange={handleUrl}
 							style={{ marginRight: '16px', width: '30ch' }}
 						/>
-						<Button
-							type='submit'
-							size='small'
-							variant='outlined'
-							style={{
-								height: 'fit-content',
-								width: 'inherit',
-								marginTop: '18px',
-								color: `${Theme.palette.primary.light}`,
-								borderColor: `${Theme.palette.primary.light}`,
-							}}
-						>
-							Test
-						</Button>
 					</Grid2>
 				</Grid2>
+				<Grid2
+					container
+					sx={{ mt: 2 }}
+				>
+					<Grid2 size={12}>
+						<HeadersForm
+							headers={headers}
+							setHeaders={setHeaders}
+						/>
+					</Grid2>
+				</Grid2>
+
 				<div>
 					<TextField
 						id='filled-multiline-static'
@@ -123,6 +129,20 @@ export default function SlerpeeForm() {
 						variant='filled'
 					/>
 				</div>
+				<Button
+					type='submit'
+					size='small'
+					variant='outlined'
+					style={{
+						height: 'fit-content',
+						width: 'inherit',
+						marginTop: '18px',
+						color: `${Theme.palette.primary.light}`,
+						borderColor: `${Theme.palette.primary.light}`,
+					}}
+				>
+					Test
+				</Button>
 			</Box>
 		</FormControl>
 	);

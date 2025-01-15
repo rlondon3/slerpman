@@ -15,9 +15,14 @@
     "@fontsource/roboto": "^5.1.1",
     "@mui/icons-material": "^6.3.1",
     "@mui/material": "^6.3.1",
+    "add": "^2.0.6",
     "axios": "^1.7.9",
+    "button": "^1.1.1",
+    "input": "^1.0.1",
+    "lucide-react": "^0.471.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "shadcn-ui": "^0.9.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

@@ -60,7 +60,7 @@ export default function SlerpeeList() {
 				md={6}
 			>
 				<Typography
-					sx={{ mt: 4, mb: 2 }}
+					sx={{ mb: 2 }}
 					variant='h6'
 					component='div'
 				>

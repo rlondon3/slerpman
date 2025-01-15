@@ -2,6 +2,8 @@ import { createContext, useState, useContext, ReactNode } from 'react';
 import axios from 'axios';
 
 interface ApiContextType {
+	headers: Array<{ key: string; value: string }>;
+	setHeaders: (headers: Array<{ key: string; value: string }>) => void;
 	url: string;
 	setUrl: (url: string) => void;
 	method: string;
@@ -20,6 +22,9 @@ interface ApiProviderProps {
 }
 
 export function ApiProvider({ children }: ApiProviderProps) {
+	const [headers, setHeaders] = useState<Array<{ key: string; value: string }>>(
+		[]
+	);
 	const [url, setUrl] = useState<string>('');
 	const [method, setMethod] = useState<string>('GET');
 	const [body, setBody] = useState<string>('{ }');
@@ -27,11 +32,22 @@ export function ApiProvider({ children }: ApiProviderProps) {
 
 	const handleRequest = async () => {
 		try {
+			// Convert headers array to object format that axios expects
+			const headerObject = headers.reduce((acc, header) => {
+				if (header.key && header.key.trim()) {
+					// Only include headers with non-empty keys
+					acc[header.key] = header.value;
+				}
+				return acc;
+			}, {} as Record<string, string>);
+
 			const config = {
 				method,
 				url,
+				headers: headerObject,
 				data: body ? JSON.parse(body) : null,
 			};
+
 			const res = await axios(config);
 			setResponse(res.data);
 		} catch (error) {
@@ -56,6 +72,8 @@ export function ApiProvider({ children }: ApiProviderProps) {
 	return (
 		<ApiContext.Provider
 			value={{
+				headers,
+				setHeaders,
 				url,
 				setUrl,
 				method,

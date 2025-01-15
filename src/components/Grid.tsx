@@ -23,17 +23,17 @@ export default function BasicGrid() {
 				container
 				spacing={2}
 			>
-				<Grid size={8}>
-					<Item>size=8</Item>
+				<Grid size={2}>
+					<Item>Select One of My APIs</Item>
 				</Grid>
-				<Grid size={4}>
-					<Item>size=4</Item>
+				<Grid>
+					<SlerpeeForm />
 				</Grid>
-				<Grid size={4}>
+				<Grid size={2}>
 					<SlerpeeList />
 				</Grid>
-				<Grid size={8}>
-					<SlerpeeForm />
+				<Grid size={2}>
+					<SlerpeeList />
 				</Grid>
 			</Grid>
 		</Box>
